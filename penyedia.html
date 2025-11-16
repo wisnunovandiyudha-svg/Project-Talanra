@@ -36,6 +36,25 @@ header { text-align:center; padding:15px;}
     object-fit:cover;
 }
 </style>
+
+<script>
+function randomImageKategori(k) {
+    const map = {
+        "Makanan": "food,indonesia",
+        "Transportasi": "transport,asia",
+        "Penginapan": "hotel,room",
+        "Wisata": "travel,indonesia",
+        "Perahu": "boat,sea",
+        "Desain": "design,computer",
+        "Outdoor": "outdoor,camping",
+        "Oleh2": "snack,indonesia",
+        "JasaHarian": "service,worker",
+        "Tato": "tattoo"
+    };
+    return `https://source.unsplash.com/300x300/?${map[k] || "indonesia"}`;
+}
+</script>
+
 </head>
 
 <body>
@@ -67,7 +86,7 @@ const produkDefault = [
 produkDefault.forEach(prod => {
     productList.innerHTML += `
         <a class="card" href="produk.html?nama=${prod.nama}&harga=${prod.harga}&penyedia=${penyedia}">
-            <img src="assets/default.jpg">
+            <img src="${randomImageKategori(kategori)}">
             <h4>${prod.nama}</h4>
             <p>Rp${prod.harga.toLocaleString()}</p>
             <p>⭐⭐⭐⭐☆</p>
