@@ -45,11 +45,28 @@ h2 { text-align:center; }
 function randomName() {
     const nama = [
         "Bu Siti", "Pak Darman", "Rizky", "Dewi", "Nanda",
-        "Udin", "Wiwit", "Samsul", "Intan", "Doni"
+        "Udin", "Wiwit", "Samsul", "Intan", "Doni",
+        "Rani", "Putra", "Aulia", "Rendi", "Wawan"
     ];
     return nama[Math.floor(Math.random()*nama.length)];
 }
 
+// Gambar random berdasarkan kategori
+function randomImage(k) {
+    const map = {
+        "Makanan": "food,asia",
+        "Transportasi": "transport,vehicle,asia",
+        "Penginapan": "hotel,room,indonesia",
+        "Wisata": "travel,indonesia",
+        "Perahu": "boat,sea,asia",
+        "Desain": "design,studio",
+        "Outdoor": "outdoor,camping",
+        "Oleh2": "snack,indonesia",
+        "JasaHarian": "worker,service",
+        "Tato": "tattoo,studio"
+    };
+    return `https://source.unsplash.com/300x300/?${map[k] || "indonesia"}`;
+}
 </script>
 </head>
 
@@ -71,11 +88,12 @@ document.getElementById("title").innerText = kategori;
 
 const list = document.getElementById("providerList");
 
-for (let i=1;i<=6;i++){
-    const nama = randomName() + " " + kategori;
+for (let i=1; i<=6; i++){
+    const nama = randomName();
+
     list.innerHTML += `
         <a class="card" href="penyedia.html?k=${kategori}&p=${nama}">
-            <img src="assets/default.jpg">
+            <img src="${randomImage(kategori)}">
             <div>
                 <h3>${nama}</h3>
                 <p>Rating: ⭐⭐⭐⭐☆</p>
