@@ -2,225 +2,270 @@
 <html lang="id">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Project Talanra — Marketplace Lokal</title>
-<meta name="description" content="Project Talanra - contoh marketplace lokal (Makanan, Transportasi, Penginapan, Wisata, dll)" />
+<meta name="description" content="Project Talanra - Marketplace lokal (Makanan, Transportasi, Penginapan, Wisata, dll)" />
 
-<!-- Minimal CSS (single-file). Simple, responsive, modern-ish -->
+<!-- Single-file styles -->
 <style>
   :root{
-    --bg1:#e6f0ff; --bg2:#fff7cc; --card: #ffffffee;
-    --accent:#0ea5e9; --accent-2:#f59e0b; --muted:#6b7280;
-    --glass: rgba(255,255,255,0.12);
+    --bg-a:#0b63ff; --bg-b:#ffd54d; /* blue -> yellow */
+    --card:#fff;
+    --muted:#6b7280;
+    --accent: #0b63ff;
+    --accent-2: #ffd54d;
+    --success: #25D366;
   }
   [data-theme="dark"]{
-    --bg1:#041024; --bg2:#062341; --card: #0b1220; --accent:#38bdf8; --accent-2:#fbbf24; --muted:#9ca3af; --glass: rgba(255,255,255,0.03);
+    --card:#071029;
+    --muted:#9aa6b2;
     color: #e6eef8;
   }
+
   *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    background: linear-gradient(120deg,var(--bg1),var(--bg2));
-    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    color: #0b1220;
-  }
-  header{display:flex;align-items:center;gap:12px;padding:18px 20px;max-width:1100px;margin:12px auto}
-  .logo{width:64px;height:64px;border-radius:10px;object-fit:cover;box-shadow:0 6px 24px rgba(0,0,0,0.12)}
-  h1{font-size:20px;margin:0}
-  .subtitle{font-size:13px;color:var(--muted)}
-  .top-right{margin-left:auto;display:flex;gap:8px;align-items:center}
-  .btn{padding:8px 12px;border-radius:10px;border:none;cursor:pointer;background:var(--card);box-shadow:0 6px 18px rgba(2,6,23,0.06)}
-  .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;font-weight:600}
-  .search{width:320px;padding:8px 12px;border-radius:999px;border:1px solid rgba(0,0,0,0.06)}
-  [data-theme="dark"] .search{background:#0b1220;color:inherit;border:1px solid rgba(255,255,255,0.04)}
-  .container{max-width:1100px;margin:18px auto;padding:0 20px}
-  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-  @media(min-width:900px){ .grid{grid-template-columns:repeat(4,1fr)} }
-  .cat-card{background:var(--card);padding:12px;border-radius:12px;display:flex;gap:12px;align-items:center;cursor:pointer;transition:transform .18s, box-shadow .18s}
-  .cat-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(2,6,23,0.08)}
-  .cat-thumb{width:84px;height:84px;border-radius:10px;object-fit:cover;flex-shrink:0}
-  .cat-title{font-weight:700}
-  .muted{color:var(--muted);font-size:13px}
-  .section-title{display:flex;align-items:center;gap:12px;margin:18px 0}
-  .providers{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-  @media(min-width:900px){ .providers{grid-template-columns:repeat(3,1fr)} }
-  .provider-card{background:var(--card);padding:12px;border-radius:12px;cursor:pointer;transition:transform .15s}
-  .provider-card:hover{transform:translateY(-6px)}
-  .provider-thumb{width:100%;height:160px;object-fit:cover;border-radius:8px}
-  .product-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-  @media(min-width:900px){ .product-grid{grid-template-columns:repeat(3,1fr)} }
-  .product{background:var(--card);padding:10px;border-radius:12px;display:flex;flex-direction:column;gap:8px}
+  body{margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;background:linear-gradient(135deg,var(--bg-a),var(--bg-b));min-height:100vh;color:#0b1220}
+  a{color:inherit}
+  /* Header */
+  header{position:sticky;top:0;backdrop-filter: blur(6px);z-index:40;padding:12px 18px;background:linear-gradient(90deg,rgba(255,255,255,0.6),rgba(255,255,255,0.2));display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(2,6,23,0.08)}
+  [data-theme="dark"] header{background:rgba(3,6,12,0.6)}
+  .logo{width:56px;height:56px;border-radius:10px;object-fit:cover;box-shadow:0 8px 24px rgba(11,19,43,0.12)}
+  .brand{font-weight:800;font-size:18px}
+  .subtitle{font-size:12px;color:var(--muted)}
+  .search{margin-left:16px;flex:1}
+  .search input{width:100%;padding:10px 12px;border-radius:999px;border:1px solid rgba(2,6,23,0.06);outline:none}
+  .top-actions{display:flex;gap:8px;align-items:center;margin-left:12px}
+  .btn{padding:8px 12px;border-radius:10px;border:none;background:var(--card);cursor:pointer;box-shadow:0 6px 20px rgba(2,6,23,0.06)}
+  .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;font-weight:700}
+  .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;cursor:pointer}
+
+  /* Layout */
+  .container{max-width:1100px;margin:18px auto;padding:0 16px}
+  .hero{display:flex;gap:14px;align-items:center;margin-bottom:14px}
+  .hero-card{background:rgba(255,255,255,0.9);padding:14px;border-radius:12px;display:flex;align-items:center;gap:12px;flex:1;box-shadow:0 12px 30px rgba(2,6,23,0.08)}
+  [data-theme="dark"] .hero-card{background: rgba(11,17,28,0.6)}
+  .hero img{width:96px;height:96px;border-radius:8px;object-fit:cover}
+  .hero h2{margin:0;font-size:18px}
+  .categories{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:18px}
+  @media(min-width:900px){ .categories{grid-template-columns:repeat(5,1fr)} }
+  .cat{background:var(--card);padding:12px;border-radius:12px;text-align:center;cursor:pointer;transition:transform .15s,box-shadow .15s;display:flex;flex-direction:column;gap:8px;align-items:center}
+  .cat:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(2,6,23,0.08)}
+  .cat img{width:100%;height:80px;object-fit:cover;border-radius:8px}
+
+  /* Pages */
+  .page{display:none}
+  .page.active{display:block}
+  .section-title{display:flex;align-items:center;justify-content:space-between;margin:10px 0}
+  .muted{color:var(--muted)}
+  .providers-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  @media(min-width:900px){ .providers-grid{grid-template-columns:repeat(3,1fr)} }
+  .provider{background:var(--card);padding:12px;border-radius:12px;cursor:pointer;transition:transform .12s}
+  .provider:hover{transform:translateY(-6px)}
+  .provider img{width:100%;height:140px;object-fit:cover;border-radius:8px}
+  .provider .name{font-weight:700;margin-top:8px}
+  .provider .meta{font-size:13px;color:var(--muted)}
+
+  .products-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  @media(min-width:900px){ .products-grid{grid-template-columns:repeat(3,1fr)} }
+  .product{background:var(--card);padding:10px;border-radius:12px;display:flex;flex-direction:column;gap:8px;cursor:pointer}
   .product img{width:100%;height:160px;object-fit:cover;border-radius:8px}
-  .price{font-weight:700}
-  .rating{color:#f59e0b}
-  .floating-cart{position:fixed;right:18px;bottom:18px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;padding:12px;border-radius:999px;box-shadow:0 18px 50px rgba(2,6,23,0.15);display:flex;align-items:center;gap:10px;cursor:pointer}
-  .wa-btn{background:#25D366;color:white;padding:8px 10px;border-radius:10px;text-decoration:none;font-weight:600}
-  .modal{position:fixed;inset:0;background:rgba(2,6,23,0.5);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .18s}
-  .modal.open{opacity:1;pointer-events:auto}
-  .modal-card{background:var(--card);width:100%;max-width:920px;border-radius:12px;padding:16px;max-height:86vh;overflow:auto}
-  .row{display:flex;gap:12px;align-items:center}
-  .col{flex:1}
-  input,select,textarea{padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);width:100%;background:transparent}
-  [data-theme="dark"] input, [data-theme="dark"] select, [data-theme="dark"] textarea{border:1px solid rgba(255,255,255,0.04)}
+  .product .title{font-weight:700}
+  .price{font-weight:800;color:var(--accent)}
+  .prod-row{display:flex;justify-content:space-between;align-items:center}
+
+  /* Product page (full) */
+  .product-page{background:var(--card);padding:16px;border-radius:12px}
+  .product-big{display:flex;flex-direction:column;gap:12px}
+  @media(min-width:900px){ .product-big{flex-direction:row} }
+  .product-big img{width:100%;max-width:560px;height:360px;object-fit:cover;border-radius:12px}
+  .product-info{flex:1}
+  .wa-btn{background:var(--success);color:white;padding:10px 12px;border-radius:10px;text-decoration:none;display:inline-block;font-weight:700}
+
+  /* Floating cart */
+  .floating-cart{position:fixed;right:18px;bottom:18px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;padding:10px 14px;border-radius:999px;box-shadow:0 18px 50px rgba(2,6,23,0.15);cursor:pointer;display:flex;gap:10px;align-items:center}
+
+  /* Modal & forms */
+  .modal-back{position:fixed;inset:0;background:rgba(2,6,23,0.45);display:flex;align-items:center;justify-content:center;z-index:60;opacity:0;pointer-events:none;transition:opacity .15s}
+  .modal-back.open{opacity:1;pointer-events:auto}
+  .modal-card{background:var(--card);padding:14px;border-radius:12px;max-width:980px;width:100%}
+
+  /* small */
   .small{font-size:13px;color:var(--muted)}
-  .chip{display:inline-block;padding:6px 10px;border-radius:999px;background:var(--glass)}
-  .controls{display:flex;gap:8px;flex-wrap:wrap}
-  footer{padding:18px 20px;text-align:center;color:var(--muted);margin-top:40px}
-  .icon-btn{background:transparent;border:1px solid rgba(0,0,0,0.06);padding:8px;border-radius:8px;cursor:pointer}
-  [data-theme="dark"] .icon-btn{border:1px solid rgba(255,255,255,0.04)}
+  footer{margin-top:40px;padding:20px;text-align:center;color:var(--muted)}
   .admin-badge{background:#111;color:#fff;padding:6px 8px;border-radius:8px;font-weight:700}
-  .empty{padding:28px;border-radius:10px;background:var(--card);text-align:center}
-  .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:90px;background:#111;color:white;padding:8px 14px;border-radius:10px;opacity:0;pointer-events:none;transition:opacity .2s}
-  .toast.show{opacity:1;pointer-events:auto}
+  .empty{padding:28px;border-radius:12px;background:rgba(255,255,255,0.9);text-align:center}
+  [data-theme="dark"] .empty{background:rgba(11,17,28,0.6)}
 </style>
 </head>
-<body>
+<body data-theme="light">
 
 <!-- Header -->
 <header>
-  <img src="logotalanra.jpg" class="logo" alt="Logo" onerror="this.src=placeholder(64,64,'T');" />
+  <img src="logotalanra.jpg" alt="logo" class="logo" onerror="this.src=placeholder(64,64,'T')">
   <div>
-    <h1>Project Talanra</h1>
-    <div class="subtitle">Marketplace Lokal — Makanan · Transportasi · Penginapan · Jasa & Lainnya</div>
+    <div class="brand">Project Talanra</div>
+    <div class="subtitle small">Marketplace Lokal — Makanan · Transportasi · Penginapan · Jasa</div>
   </div>
 
-  <div class="top-right">
-    <input id="search" class="search" placeholder="Cari penyedia atau produk..." />
-    <button id="themeToggle" title="Toggle theme" class="btn icon-btn">🌗</button>
-    <button id="adminToggle" class="btn">Admin</button>
+  <div class="search">
+    <input id="globalSearch" placeholder="Cari produk, penyedia, atau kategori..." oninput="onSearch()" />
+  </div>
+
+  <div class="top-actions">
+    <button id="themeBtn" class="icon-btn" title="Toggle theme">🌓</button>
+    <button id="adminBtn" class="btn">Admin</button>
+    <button id="homeBtn" class="btn btn-primary" onclick="navigate('/')">Beranda</button>
   </div>
 </header>
 
-<!-- Main -->
+<!-- Main container -->
 <main class="container">
-  <!-- Categories -->
-  <section>
-    <div class="section-title">
-      <h2>Kategori</h2>
-      <div class="muted">Klik kategori untuk lihat penyedia</div>
+  <!-- HOME PAGE -->
+  <section id="home" class="page active">
+    <div class="hero">
+      <div class="hero-card">
+        <img src="logotalanra.jpg" onerror="this.src=placeholder(96,96,'T')" alt="logo" />
+        <div style="flex:1">
+          <h2>Selamat datang di Project Talanra</h2>
+          <div class="small">Marketplace lokal — temukan makanan, transportasi, penginapan, dan jasa di sekitarmu.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+          <a class="btn" href="#" onclick="navigate('/cart');return false">Lihat Keranjang</a>
+          <a class="btn wa-btn" href="https://wa.me/6282211608688" target="_blank">Hubungi via WhatsApp</a>
+        </div>
+      </div>
     </div>
 
-    <div id="categories" class="grid"></div>
+    <div class="section-title">
+      <h3>Semua Kategori</h3>
+      <div class="small">Klik untuk masuk ke halaman kategori</div>
+    </div>
+
+    <div id="categories" class="categories"></div>
   </section>
 
-  <!-- Providers -->
-  <section id="providersWrap" style="margin-top:18px">
+  <!-- CATEGORY PAGE -->
+  <section id="categoryPage" class="page">
     <div class="section-title">
-      <h2 id="providersTitle">Penyedia</h2>
-      <div class="muted" id="providersSubtitle">Pilih kategori</div>
+      <div>
+        <h3 id="catName">Kategori</h3>
+        <div class="small" id="catSubtitle">Daftar penyedia</div>
+      </div>
+      <div>
+        <button class="btn" onclick="navigate('/')">← Kembali</button>
+      </div>
     </div>
-    <div id="providers" class="providers"></div>
+
+    <div id="providers" class="providers-grid"></div>
+    <div id="noProviders" class="empty hidden" style="display:none">Tidak ada penyedia.</div>
   </section>
 
-  <!-- Products -->
-  <section id="productsWrap" style="margin-top:18px;display:none">
+  <!-- PROVIDER PAGE -->
+  <section id="providerPage" class="page">
     <div class="section-title">
-      <h2 id="productsTitle">Produk</h2>
-      <div class="muted" id="productsSubtitle">Dari penyedia</div>
+      <div>
+        <h3 id="providerName">Penyedia</h3>
+        <div class="small" id="providerMeta">Produk & info</div>
+      </div>
+      <div>
+        <button class="btn" onclick="navigate('#/category/'+encodeURIComponent(window.locationState?.category||'') )">← Kembali</button>
+      </div>
     </div>
-    <div id="products" class="product-grid"></div>
+
+    <div id="providerInfo" style="display:flex;gap:12px;align-items:center;margin-bottom:12px"></div>
+    <div id="providerProducts" class="products-grid"></div>
+  </section>
+
+  <!-- PRODUCT PAGE (full) -->
+  <section id="productPage" class="page">
+    <div class="section-title">
+      <div>
+        <h3 id="productTitleHead">Detail Produk</h3>
+        <div class="small" id="productMetaHead">Detail</div>
+      </div>
+      <div>
+        <button class="btn" onclick="navigate('#/provider/'+encodeURIComponent(window.locationState?.category||'')+'/'+encodeURIComponent(window.locationState?.providerIdx||0))">← Kembali</button>
+      </div>
+    </div>
+
+    <div id="productArea" class="product-page"></div>
   </section>
 </main>
 
 <!-- Floating cart -->
-<div id="cartBtn" class="floating-cart" title="Keranjang">
+<div class="floating-cart" id="cartFloat" title="Keranjang" onclick="navigate('/cart')">
   <div id="cartCount">0</div>
   <div>Keranjang</div>
 </div>
 
-<!-- Product modal -->
-<div id="modal" class="modal" aria-hidden="true">
-  <div class="modal-card">
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
-      <h3 id="modalTitle">Detail Produk</h3>
-      <div style="display:flex;gap:8px;align-items:center">
-        <button id="modalClose" class="btn icon-btn">Tutup</button>
-      </div>
-    </div>
-    <div id="modalBody" style="margin-top:12px"></div>
-  </div>
-</div>
-
+<!-- Cart page reuses productPage route /cart -->
 <!-- Admin modal -->
-<div id="adminModal" class="modal" aria-hidden="true">
+<div id="adminModal" class="modal-back" onclick="if(event.target===this)closeAdminModal()">
   <div class="modal-card">
     <h3>Admin Panel</h3>
     <div id="adminArea"></div>
-    <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
-      <button id="adminClose" class="btn">Tutup</button>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+      <button class="btn" onclick="closeAdminModal()">Tutup</button>
     </div>
   </div>
 </div>
 
-<!-- Cart modal -->
-<div id="cartModal" class="modal" aria-hidden="true">
-  <div class="modal-card">
-    <h3>Keranjang</h3>
-    <div id="cartBody" style="margin-top:12px"></div>
-    <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
-      <button id="checkoutBtn" class="btn btn-primary">Checkout (dummy)</button>
-      <button id="clearCartBtn" class="btn">Kosongkan</button>
-    </div>
-  </div>
-</div>
+<!-- small toast -->
+<div id="toast" style="position:fixed;left:50%;transform:translateX(-50%);bottom:90px;background:#111;color:#fff;padding:8px 12px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:80"></div>
 
-<div id="toast" class="toast"></div>
+<footer style="text-align:center;margin-top:30px;color:var(--muted);padding-bottom:30px">© Project Talanra — Demo. WA demo: <a href="https://wa.me/6282211608688" target="_blank">+62 822-1160-8688</a></footer>
 
-<footer>
-  © Project Talanra — demo. WhatsApp (demo): <a href="https://wa.me/6282211608688" target="_blank" class="wa-btn">Hubungi via WhatsApp</a>
-</footer>
-
-<!-- Script: data + logic -->
+<!-- Script: data + SPA routing + logic -->
 <script>
-/* ---------------------------
-   Utilities & placeholders
-   --------------------------- */
+/* -----------------------
+   Utilities
+   ----------------------- */
 const WA_LINK = 'https://wa.me/6282211608688';
 function placeholder(w=200,h=200,text='IMG'){
   const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}' viewBox='0 0 ${w} ${h}'><rect width='100%' height='100%' fill='#e6f0ff'/><text x='50%' y='50%' font-family='Arial' fill='#0b1220' font-size='24' text-anchor='middle' dominant-baseline='middle'>${text}</text></svg>`;
   return 'data:image/svg+xml;utf8,'+encodeURIComponent(svg);
 }
-function fmt(n){ return 'Rp'+Number(n).toLocaleString('id-ID'); }
-function toast(msg){ const t=document.getElementById('toast'); t.innerText=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2000); }
+function q(sel){ return document.querySelector(sel) }
+function qAll(sel){ return Array.from(document.querySelectorAll(sel)) }
+function showToast(msg, t=1600){ const el=q('#toast'); el.innerText=msg; el.style.opacity=1; setTimeout(()=>el.style.opacity=0,t) }
+function fmt(n){ return 'Rp'+Number(n).toLocaleString('id-ID') }
 
-/* ---------------------------
-   Initial data (seed)
-   --------------------------- */
-const seedData = (function(){
-  const cats = [
-    "Makanan","Transportasi","Penginapan","Wisata / Trip Lokal","Sewa Perahu",
-    "Jasa Desain / Foto","Peralatan Outdoor","Oleh-oleh","Jasa Harian","Jasa Tato"
+/* -----------------------
+   Random Indonesian names generator
+   ----------------------- */
+const IND_NAMES = {
+  first: ["Ayu","Budi","Citra","Dedi","Eko","Fajar","Gita","Heri","Indah","Joko","Kiki","Lia","Maman","Nisa","Oka","Putri","Rizky","Sari","Tito","Umi","Vina","Wawan","Yuni","Zaki"],
+  last: ["Saputra","Wijaya","Sutanto","Pratama","Putra","Sari","Hidayat","Kusuma","Santoso","Wijaya","Rahman","Hasan","Wijaya","Haryanto","Tamami"]
+};
+function randomName(){ const f=IND_NAMES.first[Math.floor(Math.random()*IND_NAMES.first.length)]; const l=IND_NAMES.last[Math.floor(Math.random()*IND_NAMES.last.length)]; const type = Math.random() < 0.5 ? `Warung ${f}` : `${f} ${l}`; return type }
+
+/* -----------------------
+   Seed data
+   ----------------------- */
+const SEED = (function(){
+  const cats = ["Makanan","Transportasi","Penginapan","Wisata / Trip Lokal","Sewa Perahu","Jasa Desain / Foto","Peralatan Outdoor","Oleh-oleh","Jasa Harian","Jasa Tato"];
+  const imgs = [
+    "https://i.ibb.co/0G0Y3nX/nasi-goreng.jpg",
+    "https://i.ibb.co/YZ7wH2z/food.jpg",
+    "https://i.ibb.co/C0z2VCd/hotel.jpg",
+    "https://i.ibb.co/Q6Z4ZBc/boat.jpg",
+    "https://i.ibb.co/z7RxH2d/travel.jpg",
+    "https://i.ibb.co/4R6r2qB/outdoor.jpg"
   ];
-
-  const sampleImages = [
-    'https://i.ibb.co/0G0Y3nX/nasi-goreng.jpg',
-    'https://i.ibb.co/YZ7wH2z/food.jpg',
-    'https://i.ibb.co/C0z2VCd/hotel.jpg',
-    'https://i.ibb.co/Q6Z4ZBc/boat.jpg',
-    'https://i.ibb.co/z7RxH2d/travel.jpg'
-  ];
-
-  const names = ["Warung Bunda","Kulina Kita","Mas Darto","Rakyat Rasa","Nusa Jaya","Dapur Lima","Si Udin","Sari Laut","IndoRide","Kapal Nusantara","Batik Oleh","Toko Outdoor","JasaKita"];
   const data = {};
   cats.forEach((cat,i)=>{
-    data[cat] = [];
-    for(let j=0;j<6;j++){
-      const seller = {
-        id: `${i}-${j}-${Date.now().toString().slice(-4)}-${Math.random().toString(36).slice(2,6)}`,
-        name: `${names[(i+j)%names.length]} ${j+1}`,
-        img: sampleImages[(i+j)%sampleImages.length],
-        rating: Math.round((Math.random()*2+3)*10)/10,
-        products: []
-      };
+    data[cat]=[];
+    for(let s=0;s<6;s++){
+      const sellerId = `${i}-${s}-${Date.now().toString().slice(-4)}-${Math.random().toString(36).slice(2,6)}`;
+      const seller = { id: sellerId, name: randomName(), img: imgs[(i+s)%imgs.length], rating: (Math.random()*1.8+3.2).toFixed(1)*1, products: [] };
       for(let p=0;p<6;p++){
+        const pid = `${sellerId}-p${p}`;
         seller.products.push({
-          id: `${seller.id}-p${p}`,
-          title: `${(cat==='Makanan'?'Nasi Goreng':'Produk')} ${p+1}`,
-          price: 10000 + p*5000,
-          img: sampleImages[(p+i)%sampleImages.length],
-          rating: Math.round((Math.random()*2+3)*10)/10,
-          desc: `Deskripsi singkat untuk ${(cat==='Makanan'?'makanan':'produk')} ${p+1} dari ${seller.name}.`
+          id: pid,
+          title: `${cat==='Makanan' ? 'Nasi Goreng' : 'Layanan'} ${p+1}`,
+          price: 12000 + p*5000,
+          img: imgs[(p+i+1)%imgs.length],
+          rating: (Math.random()*1.8+3.2).toFixed(1)*1,
+          desc: `Deskripsi singkat untuk item ${p+1} di ${seller.name}.`
         });
       }
       data[cat].push(seller);
@@ -229,215 +274,134 @@ const seedData = (function(){
   return data;
 })();
 
-/* ---------------------------
-   State & persistence
-   --------------------------- */
-const STORAGE_KEY = 'talanra_data_v1';
-const THEME_KEY = 'talanra_theme';
-const CART_KEY = 'talanra_cart';
-const RATINGS_KEY = 'talanra_ratings';
+/* -----------------------
+   Persistence (localStorage)
+   ----------------------- */
+const KEY = 'talanra_v2_data';
+const CART_KEY = 'talanra_v2_cart';
+const RAT_KEY = 'talanra_v2_ratings';
+const THEME_KEY = 'talanra_v2_theme';
 const ADMIN_PIN = '1234';
 
-let db = loadData();
-let cart = loadCart();
-let ratings = loadRatings();
-
-function loadData(){
+function load(){
   try{
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(KEY);
     if(raw) return JSON.parse(raw);
   }catch(e){}
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(seedData));
-  return JSON.parse(JSON.stringify(seedData));
+  localStorage.setItem(KEY, JSON.stringify(SEED));
+  return JSON.parse(JSON.stringify(SEED));
 }
-function saveData(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(db)); }
-function loadCart(){ try{ const r=localStorage.getItem(CART_KEY); return r?JSON.parse(r):[] }catch(e){return []} }
-function saveCart(){ localStorage.setItem(CART_KEY, JSON.stringify(cart)); updateCartCount() }
-function loadRatings(){ try{ const r=localStorage.getItem(RATINGS_KEY); return r?JSON.parse(r):{} }catch(e){return {}} }
-function saveRatings(){ localStorage.setItem(RATINGS_KEY, JSON.stringify(ratings)); }
+let DB = load();
 
-/* ---------------------------
-   DOM elements
-   --------------------------- */
-const categoriesEl = document.getElementById('categories');
-const providersEl = document.getElementById('providers');
-const providersTitle = document.getElementById('providersTitle');
-const providersSubtitle = document.getElementById('providersSubtitle');
-const productsWrap = document.getElementById('productsWrap');
-const productsEl = document.getElementById('products');
-const productsTitle = document.getElementById('productsTitle');
-const productsSubtitle = document.getElementById('productsSubtitle');
-const modal = document.getElementById('modal');
-const modalBody = document.getElementById('modalBody');
-const modalTitle = document.getElementById('modalTitle');
-const adminModal = document.getElementById('adminModal');
-const adminArea = document.getElementById('adminArea');
-const cartBtn = document.getElementById('cartBtn');
-const cartModal = document.getElementById('cartModal');
-const cartBody = document.getElementById('cartBody');
-const searchInput = document.getElementById('search');
-const themeToggle = document.getElementById('themeToggle');
-const adminToggle = document.getElementById('adminToggle');
-const toastEl = document.getElementById('toast');
+function save(){ localStorage.setItem(KEY, JSON.stringify(DB)) }
 
-/* ---------------------------
-   Theme handling
-   --------------------------- */
-function applyTheme(){
-  const t = localStorage.getItem(THEME_KEY) || 'light';
-  document.documentElement.setAttribute('data-theme', t==='dark' ? 'dark' : 'light');
+function loadCart(){ try{ return JSON.parse(localStorage.getItem(CART_KEY)||'[]') }catch(e){return []} }
+function saveCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)) }
+let CART = loadCart();
+
+function loadRatings(){ try{ return JSON.parse(localStorage.getItem(RAT_KEY)||'{}') }catch(e){return {}} }
+function saveRatings(r){ localStorage.setItem(RAT_KEY, JSON.stringify(r)) }
+let RATINGS = loadRatings();
+
+/* -----------------------
+   Routing & state
+   ----------------------- */
+const pages = { home: q('#home'), category: q('#categoryPage'), provider: q('#providerPage'), product: q('#productPage'), cart: null };
+window.locationState = {};
+
+function navigate(path){
+  // simple router: '/', '/category/Name', '/provider/Category/Idx', '/product/Category/ProviderIdx/ProductId', '/cart'
+  if(path === '/') {
+    setActive('home'); history.pushState({},'', '#/');
+    return;
+  }
+  if(path === '/cart'){ renderCart(); setActive('product'); history.pushState({},'', '#/cart'); return; }
+
+  if(path.startsWith('#')) path = path.slice(1);
+  if(path.startsWith('/')) {
+    // handle
+    const seg = path.split('/').filter(Boolean);
+    if(seg.length===0){ setActive('home'); history.pushState({},'', '#/'); return; }
+    if(seg[0]==='category' && seg[1]){
+      const cat = decodeURIComponent(seg.slice(1).join('/'));
+      openCategory(cat); history.pushState({},'', '#/category/'+encodeURIComponent(cat)); return;
+    }
+    if(seg[0]==='provider' && seg[1] && seg[2]){
+      const cat = decodeURIComponent(seg[1]);
+      const idx = Number(decodeURIComponent(seg[2]));
+      openProvider(cat, idx); history.pushState({},'', '#/provider/'+encodeURIComponent(cat)+'/'+encodeURIComponent(idx)); return;
+    }
+    if(seg[0]==='product' && seg[1] && seg[2] && seg[3]){
+      const cat = decodeURIComponent(seg[1]); const pidx = Number(decodeURIComponent(seg[2])); const pid = decodeURIComponent(seg[3]);
+      openProductPage(cat,pidx,pid); history.pushState({},'', '#/product/'+encodeURIComponent(cat)+'/'+encodeURIComponent(pidx)+'/'+encodeURIComponent(pid)); return;
+    }
+  }
+  // fallback
+  setActive('home'); history.pushState({},'', '#/');
 }
-applyTheme();
-themeToggle.addEventListener('click', ()=> {
-  const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-  const next = cur === 'dark' ? 'light' : 'dark';
-  localStorage.setItem(THEME_KEY, next);
-  applyTheme();
-});
 
-/* ---------------------------
-   Render categories
-   --------------------------- */
-function renderCategories(filter=''){
-  categoriesEl.innerHTML = '';
-  Object.keys(db).forEach(cat=>{
-    if(filter && !cat.toLowerCase().includes(filter.toLowerCase())) return;
-    const thumb = db[cat][0]?.img || placeholder(120,120,cat[0]||'C');
-    const el = document.createElement('div');
-    el.className='cat-card';
-    el.innerHTML = `<img class="cat-thumb" src="${thumb}" alt="${cat}" onerror="this.src='${placeholder(84,84,cat[0]||'C')}'">
-      <div>
-        <div class="cat-title">${cat}</div>
-        <div class="small">${db[cat].length} penyedia</div>
-      </div>`;
-    el.addEventListener('click', ()=>openCategory(cat));
-    categoriesEl.appendChild(el);
+function setActive(name){
+  qAll('.page').forEach(p=>p.classList.remove('active'));
+  if(name==='home') q('#home').classList.add('active');
+  else if(name==='category') q('#categoryPage').classList.add('active');
+  else if(name==='provider') q('#providerPage').classList.add('active');
+  else if(name==='product') q('#productPage').classList.add('active');
+}
+
+/* -----------------------
+   Render helpers
+   ----------------------- */
+function renderCategories(){
+  const el = q('#categories'); el.innerHTML='';
+  Object.keys(DB).forEach(cat=>{
+    const thumb = DB[cat][0]?.img || placeholder(120,84,cat[0]||'C');
+    const div = document.createElement('div'); div.className='cat';
+    div.innerHTML = `<img src="${thumb}" onerror="this.src='${placeholder(200,120,cat[0]||'C')}'"><div style="font-weight:800">${cat}</div><div class="small">${DB[cat].length} penyedia</div>`;
+    div.addEventListener('click', ()=>{ navigate('/category/'+encodeURIComponent(cat)) });
+    el.appendChild(div);
   });
 }
-renderCategories();
 
-/* ---------------------------
-   Open category -> providers
-   --------------------------- */
+/* -----------------------
+   Category page
+   ----------------------- */
 function openCategory(cat){
-  providersTitle.innerText = `Penyedia — ${cat}`;
-  providersSubtitle.innerText = 'Pilih penyedia untuk lihat produk';
-  providersEl.innerHTML = '';
-  productsWrap.style.display = 'none';
-  Object.assign(window, { currentCategory: cat });
-  db[cat].forEach((s,idx)=>{
-    const card = document.createElement('div');
-    card.className = 'provider-card';
-    card.innerHTML = `<img class="provider-thumb" src="${s.img}" onerror="this.src='${placeholder(320,200,s.name.slice(0,1))}'">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
-        <div>
-          <div style="font-weight:700">${s.name}</div>
-          <div class="small">Rating: <span class="rating">${(ratings[s.id]||s.rating).toFixed(1)}</span> ⭐</div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <a class="wa-btn" href="${WA_LINK}" target="_blank">WA</a>
-          <button class="btn" onclick="event.stopPropagation(); openEditProvider('${cat}', ${idx})">Edit</button>
-        </div>
-      </div>`;
-    card.addEventListener('click', ()=>openProvider(cat, idx));
-    providersEl.appendChild(card);
+  window.locationState.category = cat;
+  q('#catName').innerText = cat;
+  q('#catSubtitle').innerText = `Menampilkan ${DB[cat]?.length||0} penyedia`;
+  const wrap = q('#providers'); wrap.innerHTML='';
+  const list = DB[cat] || [];
+  if(list.length===0){ q('#noProviders').style.display='block' } else { q('#noProviders').style.display='none' }
+  list.forEach((s,idx)=>{
+    const card = document.createElement('div'); card.className='provider';
+    card.innerHTML = `<img src="${s.img}" onerror="this.src='${placeholder(320,200,s.name[0]||'P')}'"><div class="name">${s.name}</div><div class="small">Rating: ${(RATINGS[s.id]||s.rating).toFixed(1)} ⭐</div><div style="display:flex;justify-content:space-between;margin-top:8px"><button class="btn" onclick="event.stopPropagation(); editProviderPrompt('${cat}',${idx})">Edit</button><a class="btn wa-btn" href="${WA_LINK}" target="_blank">WA</a></div>`;
+    card.addEventListener('click', ()=>{ navigate('/provider/'+encodeURIComponent(cat)+'/'+encodeURIComponent(idx)) });
+    wrap.appendChild(card);
   });
+  setActive('category');
+}
+
+/* -----------------------
+   Provider page
+   ----------------------- */
+function openProvider(cat, idx){
+  window.locationState.category = cat; window.locationState.providerIdx = idx;
+  const s = (DB[cat]||[])[idx];
+  if(!s) { showToast('Penyedia tidak ditemukan'); navigate('/'); return; }
+  q('#providerName').innerText = s.name;
+  q('#providerMeta').innerText = `${s.products.length} produk • Rating ${(RATINGS[s.id]||s.rating).toFixed(1)} ⭐`;
+  const info = q('#providerInfo'); info.innerHTML = `<img src="${s.img}" style="width:160px;height:120px;object-fit:cover;border-radius:8px" onerror="this.src='${placeholder(320,200,s.name[0])}'"><div style="flex:1"><div style="font-weight:800">${s.name}</div><div class="small" style="margin-top:4px">${s.products.length} produk tersedia</div><div style="margin-top:8px"><a class="wa-btn" href="${WA_LINK}" target="_blank">Hubungi via WhatsApp</a></div></div>`;
+  const list = q('#providerProducts'); list.innerHTML='';
+  s.products.forEach(pr=>{
+    const div = document.createElement('div'); div.className='product';
+    div.innerHTML = `<img src="${pr.img}" onerror="this.src='${placeholder(320,220,pr.title[0])}'"><div class="title">${pr.title}</div><div class="prod-row"><div class="price">${fmt(pr.price)}</div><div class="small">${(RATINGS[pr.id]||pr.rating).toFixed(1)} ⭐</div></div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn" onclick="event.stopPropagation(); navigate('/product/'+encodeURIComponent(cat)+'/'+encodeURIComponent(idx)+'/'+encodeURIComponent(pr.id))">Detail</button><button class="btn btn-primary" onclick="event.stopPropagation(); addToCart(pr.id)">Tambah Keranjang</button></div>`;
+    div.addEventListener('click', ()=>{ navigate('/product/'+encodeURIComponent(cat)+'/'+encodeURIComponent(idx)+'/'+encodeURIComponent(pr.id)) });
+    list.appendChild(div);
+  });
+  setActive('provider');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-/* ---------------------------
-   Provider -> show products
-   --------------------------- */
-function openProvider(cat, idx){
-  const p = db[cat][idx];
-  productsWrap.style.display = '';
-  productsTitle.innerText = `Produk — ${p.name}`;
-  productsSubtitle.innerText = `Dari ${p.name}`;
-  productsEl.innerHTML = '';
-  Object.assign(window, { currentProvider: { cat, idx } });
-  p.products.forEach(pr=>{
-    const div = document.createElement('div');
-    div.className='product';
-    div.innerHTML=`<img src="${pr.img}" onerror="this.src='${placeholder(320,220,pr.title.slice(0,1))}'">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <div style="font-weight:700">${pr.title}</div>
-          <div class="small">${pr.desc||''}</div>
-        </div>
-        <div style="text-align:right">
-          <div class="price">${fmt(pr.price)}</div>
-          <div class="small rating">${(ratings[pr.id]||pr.rating).toFixed(1)} ⭐</div>
-        </div>
-      </div>
-      <div style="display:flex;gap:8px;margin-top:8px">
-        <button class="btn" onclick="event.stopPropagation(); openProductModal('${p.name}', '${pr.id}')">Lihat</button>
-        <button class="btn btn-primary" onclick="event.stopPropagation(); addToCart('${p.name}','${pr.id}')">Tambah Keranjang</button>
-      </div>`;
-    productsEl.appendChild(div);
-  });
-  window.scrollTo({top:document.querySelector('main').offsetTop,behavior:'smooth'});
-}
-
-/* ---------------------------
-   Modal: product detail
-   --------------------------- */
-function openProductModal(providerName, productId){
-  const provIdx = window.currentProvider.idx;
-  const cat = window.currentProvider.cat;
-  const provider = db[cat][provIdx];
-  const product = provider.products.find(x=>x.id===productId);
-  if(!product) return;
-  modalTitle.innerText = product.title;
-  modalBody.innerHTML = `
-    <div class="row">
-      <div style="flex:1"><img src="${product.img}" style="width:100%;height:300px;object-fit:cover;border-radius:10px" onerror="this.src='${placeholder(640,360,product.title.slice(0,1))}'"></div>
-      <div style="flex:1;padding-left:12px">
-        <div style="font-weight:800;font-size:20px">${product.title}</div>
-        <div class="small" style="margin-top:6px">${product.desc||''}</div>
-        <div style="margin-top:8px;font-weight:700">${fmt(product.price)}</div>
-        <div style="margin-top:8px">Rating: <span class="rating">${(ratings[product.id]||product.rating).toFixed(1)}</span> ⭐</div>
-        <div style="margin-top:12px;display:flex;gap:8px">
-          <button class="btn btn-primary" onclick="addToCart('${provider.name}','${product.id}')">Tambah ke Keranjang</button>
-          <a class="wa-btn" href="${WA_LINK}" target="_blank">Hubungi via WhatsApp</a>
-        </div>
-        <div style="margin-top:12px">
-          <label class="small">Beri rating: </label>
-          <div style="display:flex;gap:8px;margin-top:6px">
-            ${[1,2,3,4,5].map(n=>`<button class="btn" onclick="setRating('${product.id}',${n})">${'★'.repeat(n)}</button>`).join('')}
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-  openModal(modal);
-}
-
-/* ---------------------------
-   Modal helpers
-   --------------------------- */
-function openModal(el){ el.classList.add('open'); el.setAttribute('aria-hidden','false'); }
-function closeModal(el){ el.classList.remove('open'); el.setAttribute('aria-hidden','true'); }
-document.getElementById('modalClose').addEventListener('click', ()=>closeModal(modal));
-modal.addEventListener('click',(e)=>{ if(e.target===modal) closeModal(modal) });
-
-/* ---------------------------
-   Cart functions
-   --------------------------- */
-function updateCartCount(){ document.getElementById('cartCount').innerText = cart.length; }
-function addToCart(providerName, productId){
-  // find product from db
-  let found = null; let provName=null;
-  for(const cat of Object.keys(db)){
-    for(const s of db[cat]){
-      const p = s.products.find(x=>x.id===productId);
-      if(p){ found = p; provName=s.name; break; }
-    }
-    if(found) break;
-  }
-  if(!found) return toast('Produk tidak ditemukan');
-  cart.push({ id:found.id, title:found.title, price:found.price, img:found.img, provider:provName });
-  saveCart();
-  updateCartCount();
-  toast('Ditambahkan ke keranjang');
-}
-cartBtn.addEventL
+/* -----------------------
+   Product full page
+   ----------------
