@@ -50,23 +50,6 @@ function randomName() {
     ];
     return nama[Math.floor(Math.random()*nama.length)];
 }
-
-// Gambar random berdasarkan kategori
-function randomImage(k) {
-    const map = {
-        "Makanan": "food,asia",
-        "Transportasi": "transport,vehicle,asia",
-        "Penginapan": "hotel,room,indonesia",
-        "Wisata": "travel,indonesia",
-        "Perahu": "boat,sea,asia",
-        "Desain": "design,studio",
-        "Outdoor": "outdoor,camping",
-        "Oleh2": "snack,indonesia",
-        "JasaHarian": "worker,service",
-        "Tato": "tattoo,studio"
-    };
-    return `https://source.unsplash.com/300x300/?${map[k] || "indonesia"}`;
-}
 </script>
 </head>
 
@@ -93,7 +76,7 @@ for (let i=1; i<=6; i++){
 
     list.innerHTML += `
         <a class="card" href="penyedia.html?k=${kategori}&p=${nama}">
-            <img src="${randomImage(kategori)}">
+            <img src="assets/logotalanra.jpg">
             <div>
                 <h3>${nama}</h3>
                 <p>Rating: ⭐⭐⭐⭐☆</p>
