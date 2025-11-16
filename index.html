@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Project Talanra</title>
+
+<!-- Tailwind via CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  body {
+    background: linear-gradient(135deg, #1e3a8a, #fde047);
+  }
+</style>
+</head>
+
+<body class="min-h-screen p-4 text-gray-900">
+
+<!-- Header -->
+<div class="flex items-center gap-3 mb-6">
+  <img src="./logotalanra.jpg" onerror="this.src='https://dummyimage.com/80x80/1e3a8a/ffffff&text=T';" class="w-16 h-16 rounded-xl shadow" />
+  <h1 class="text-3xl font-bold text-white drop-shadow">Project Talanra</h1>
+</div>
+
+<!-- Search -->
+<input id="searchInput"
+  class="w-full p-3 rounded-xl mb-4 shadow"
+  placeholder="Cari penyedia atau produk..."
+  oninput="handleSearch()"
+/>
+
+<!-- WhatsApp -->
+<a href="https://wa.me/6282211608688"
+  class="block w-full text-center bg-green-500 text-white py-3 rounded-xl font-semibold shadow mb-4">
+  Hubungi via WhatsApp
+</a>
+
+<!-- Admin Toggle -->
+<button onclick="toggleAdmin()"
+  class="w-full bg-yellow-400 py-3 rounded-xl font-bold shadow mb-4">
+  Mode Admin
+</button>
+
+<!-- Admin Panel -->
+<div id="adminPanel" class="hidden p-4 bg-white rounded-xl shadow mb-6">
+  <h2 class="font-bold text-lg mb-2">Tambah Produk</h2>
+  <input id="adminProductName" class="w-full p-2 border rounded mb-2" placeholder="Nama Produk" />
+  <input id="adminProductPrice" class="w-full p-2 border rounded mb-2" placeholder="Harga (Rp)" />
+  <button onclick="addProduct()" class="w-full bg-blue-500 text-white py-2 rounded shadow">
+    Tambah Produk ke Penyedia Ini
+  </button>
+</div>
+
+<!-- Main Content -->
+<div id="app"></div>
+
+<script>
+/* ============================
+      DATA TEMPLATE
+============================ */
+const defaultImg = "https://dummyimage.com/300x300/f3f4f6/000&text=Foto";
+
+const categories = [
+  { name: "Makanan" },
+  { name: "Transportasi" },
+  { name: "Penginapan" },
+  { name: "Wisata / Trip Lokal" },
+  { name: "Sewa Perahu" },
+  { name: "Jasa Desain / Foto" },
+  { name: "Peralatan Outdoor" },
+  { name: "Oleh-oleh" },
+  { name: "Jasa Harian" },
+  { name: "Jasa Tato" }
+];
+
+// Generate penyedia acak
+function providersFor(category) {
+  return Array.from({ length: 6 }).map((_, i) => ({
+    name: `${category} Provider ${i+1}`,
+    wa: "https://wa.me/6282211608688",
+    rating: Math.floor(Math.random() * 5) + 1,
+    products: [
+      { name: `${category} Item A`, price: 15000, img: defaultImg },
+      { name: `${category} Item B`, price: 20000, img: defaultImg }
+    ]
+  }));
+}
+
+let state = {
+  page: "categories",
+  selectedCategory: null,
+  selectedProvider: null,
+  dataset: {}
+};
+
+categories.forEach(cat => {
+  state.dataset[cat.name] = providersFor(cat.name);
+});
+
+/* ============================
+      RENDER ENGINE
+============================ */
+function render() {
+  const app = document.getElementById("app");
+
+  /* LIST KATEGORI */
+  if (state.page === "categories") {
+    app.innerHTML = `
+      <div class="grid grid-cols-1 gap-4">
+        ${categories.map(cat => `
+          <div onclick="selectCategory('${cat.name}')"
+            class="bg-white rounded-xl p-4 shadow flex items-center gap-4 cursor-pointer">
+            <img src="${defaultImg}" class="w-20 h-20 rounded-lg object-cover" />
+            <h2 class="text-xl font-bold">${cat.name}</h2>
+          </div>
+        `).join("")}
+      </div>
+    `;
+    return;
+  }
+
+  /* LIST PENYEDIA */
+  if (state.page === "providers") {
+    const providers = state.dataset[state.selectedCategory];
+    app.innerHTML = `
+      <button onclick="goBack()" class="mb-4 text-white underline">← Kembali</button>
+      <h2 class="text-2xl font-bold text-white mb-4">${state.selectedCategory}</h2>
+      <div class="grid grid-cols-1 gap-4">
+        ${providers.map((p, idx) => `
+          <div onclick="selectProvider(${idx})"
+            class="bg-white rounded-xl p-4 shadow cursor-pointer">
+            <h3 class="text-xl font-bold">${p.name}</h3>
+            <p class="text-yellow-500">⭐ ${p.rating}</p>
+            <a href="${p.wa}" class="text-green-600 underline">WhatsApp</a>
+          </div>
+        `).join("")}
+      </div>
+    `;
+    return;
+  }
+
+  /* LIST PRODUK */
+  if (state.page === "products") {
+    const p = state.selectedProvider;
+    app.innerHTML = `
+      <button onclick="goBack()" class="mb-4 text-white underline">← Kembali</button>
+      <h2 class="text-2xl font-bold text-white mb-1">${p.name}</h2>
+      <p class="text-yellow-300 mb-4">⭐ ${p.rating}</p>
+      <div class="grid grid-cols-2 gap-4">
+        ${p.products.map(prod => `
+          <div class="bg-white rounded-xl p-3 shadow">
+            <div class="aspect-square w-full rounded-lg overflow-hidden">
+              <img src="${prod.img}" class="w-full h-full object-cover">
+            </div>
+            <p class="font-bold mt-2">${prod.name}</p>
+            <p class="text-sm text-gray-700">Rp${prod.price.toLocaleString()}</p>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+}
+
+/* ============================
+      INTERAKSI
+============================ */
+function selectCategory(name) {
+  state.page = "providers";
+  state.selectedCategory = name;
+  render();
+}
+
+function selectProvider(index) {
+  state.page = "products";
+  state.selectedProvider = state.dataset[state.selectedCategory][index];
+  render();
+}
+
+function goBack() {
+  if (state.page === "products") state.page = "providers";
+  else state.page = "categories";
+  render();
+}
+
+function handleSearch() {
+  const term = document.getElementById("searchInput").value.toLowerCase();
+  if (!term) return render();
+
+  const results = [];
+
+  for (let cat of categories) {
+    state.dataset[cat.name].forEach(p => {
+      const match =
+        p.name.toLowerCase().includes(term) ||
+        p.products.some(prod => prod.name.toLowerCase().includes(term));
+
+      if (match) results.push(p);
+    });
+  }
+
+  const app = document.getElementById("app");
+  app.innerHTML = `
+    <h2 class="text-white text-xl font-bold mb-4">Hasil Pencarian</h2>
+    <div class="grid grid-cols-1 gap-4">
+      ${results.map(p => `
+        <div class="bg-white p-4 rounded-xl shadow">
+          <h3 class="font-bold">${p.name}</h3>
+          <p class="text-yellow-500">⭐ ${p.rating}</p>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+/* ============================
+      ADMIN
+============================ */
+function toggleAdmin() {
+  document.getElementById("adminPanel").classList.toggle("hidden");
+}
+
+function addProduct() {
+  const name = document.getElementById("adminProductName").value;
+  const price = Number(document.getElementById("adminProductPrice").value);
+
+  if (!state.selectedProvider) return alert("Pilih penyedia dulu.");
+  if (!name || !price) return alert("Isi lengkap!");
+
+  state.selectedProvider.products.push({
+    name,
+    price,
+    img: defaultImg
+  });
+
+  render();
+  alert("Produk ditambahkan.");
+}
+
+/* Render pertama */
+render();
+</script>
+
+</body>
+</html>
