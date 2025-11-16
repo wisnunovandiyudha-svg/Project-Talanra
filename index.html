@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Talanra</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(180deg, #0044ff, #ffdf54);
+        background-attachment: fixed;
+        color: #fff;
+    }
+
+    header {
+        text-align: center;
+        padding: 20px;
+    }
+
+    header img {
+        width: 140px;
+        border-radius: 10px;
+    }
+
+    h2 {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .search-box {
+        text-align: center;
+        margin: 15px;
+    }
+
+    .search-box input {
+        width: 80%;
+        padding: 10px;
+        border-radius: 8px;
+        border: none;
+        font-size: 16px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 20px;
+    }
+
+    .card {
+        background: rgba(255,255,255,0.15);
+        padding: 12px;
+        border-radius: 12px;
+        backdrop-filter: blur(6px);
+        text-align: center;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    .card img {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .product-card {
+        background: rgba(255,255,255,0.25);
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .star {
+        color: gold;
+        font-size: 18px;
+    }
+
+    .btn-wa {
+        display: block;
+        margin-top: 10px;
+        background: #25D366;
+        padding: 8px;
+        border-radius: 8px;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .admin-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 12px;
+        border-radius: 50%;
+        background: #000;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .admin-panel {
+        background: rgba(0,0,0,0.8);
+        padding: 20px;
+        position: fixed;
+        top: 20%;
+        left: 10%;
+        right: 10%;
+        border-radius: 12px;
+        display: none;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 8px;
+        margin-top: 8px;
+        border-radius: 8px;
+        border: none;
+    }
+
+    .btn-submit {
+        margin-top: 10px;
+        padding: 10px;
+        background: yellow;
+        color: #000;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        font-weight: bold;
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <img src="logotalanra.jpg" alt="Project Talanra">
+    <h1>Project Talanra Marketplace</h1>
+</header>
+
+<div class="search-box">
+    <input type="text" id="searchInput" placeholder="Cari kategori...">
+</div>
+
+<h2>Kategori</h2>
+
+<div class="grid" id="categoryGrid">
+</div>
+
+<!-- Penyedia -->
+<div id="providerSection" class="hidden">
+    <h2 id="providerTitle"></h2>
+    <div class="grid" id="providerGrid"></div>
+</div>
+
+<!-- Produk -->
+<div id="productSection" class="hidden">
+    <h2 id="productTitle"></h2>
+    <div class="grid" id="productGrid"></div>
+</div>
+
+<!-- ADMIN MINI -->
+<div class="admin-btn" onclick="toggleAdmin()">＋</div>
+
+<div class="admin-panel" id="adminPanel">
+    <h3 style="color:white">Tambah Produk</h3>
+
+    <select id="adminCategory"></select>
+    <input id="adminProvider" placeholder="Nama Penyedia">
+    <input id="adminProduct" placeholder="Nama Produk">
+    <input id="adminHarga" placeholder="Harga (Rp)">
+    <input id="adminFoto" placeholder="URL Foto">
+    
+    <button class="btn-submit" onclick="addProduct()">Tambah</button>
+</div>
+
+<script>
+// DATA MARKETPLACE
+const categories = [
+    "Makanan", "Transportasi", "Penginapan",
+    "Wisata / Trip Lokal", "Sewa Perahu",
+    "Jasa Desain / Foto", "Peralatan Outdoor",
+    "Oleh-oleh", "Jasa Harian", "Jasa Tato"
+];
+
+const defaultImage = "https://i.ibb.co/YZ7wH2z/food.jpg";
+
+const providers = {};
+
+categories.forEach(cat => {
+    providers[cat] = [];
+    for (let i = 1; i <= 6; i++) {
+        providers[cat].push({
+            name: `Penyedia ${i}`,
+            products: [
+                {name: "Produk A", price: 15000, img: defaultImage, rating: 4},
+                {name: "Produk B", price: 20000, img: defaultImage, rating: 5}
+            ]
+        });
+    }
+});
+
+// RENDER KATEGORI
+const categoryGrid = document.getElementById("categoryGrid");
+categories.forEach(cat => {
+    categoryGrid.innerHTML += `
+        <div class="card" onclick="openProviders('${cat}')">
+            <img src="${defaultImage}">
+            <h3>${cat}</h3>
+        </div>
+    `;
+});
+
+// CARI
+document.getElementById("searchInput").addEventListener("input", e => {
+    const q = e.target.value.toLowerCase();
+    [...categoryGrid.children].forEach(card => {
+        card.style.display = card.innerText.toLowerCase().includes(q) ? "" : "none";
+    });
+});
+
+// BUKA PENYEDIA
+function openProviders(cat) {
+    document.getElementById("providerSection").classList.remove("hidden");
+    document.getElementById("productSection").classList.add("hidden");
+    document.getElementById("providerTitle").innerText = cat;
+
+    const grid = document.getElementById("providerGrid");
+    grid.innerHTML = "";
+
+    providers[cat].forEach((p, idx) => {
+        grid.innerHTML += `
+            <div class="card" onclick="openProducts('${cat}', ${idx})">
+                <img src="${p.products[0].img}">
+                <h3>${p.name}</h3>
+                <span class="star">★★★★★</span>
+            </div>
+        `;
+    });
+}
+
+// PRODUK
+function openProducts(cat, idx) {
+    document.getElementById("productSection").classList.remove("hidden");
+    const list = providers[cat][idx].products;
+
+    document.getElementById("productTitle").innerText = providers[cat][idx].name;
+    const grid = document.getElementById("productGrid");
+    grid.innerHTML = "";
+
+    list.forEach(prod => {
+        grid.innerHTML += `
+            <div class="product-card">
+                <img src="${prod.img}" style="width:100%;border-radius:10px;">
+                <h3>${prod.name}</h3>
+                <p>Harga: Rp${prod.price.toLocaleString()}</p>
+                <p>${"★".repeat(prod.rating)}</p>
+                <a class="btn-wa" href="https://wa.me/6282211608688" target="_blank">Hubungi via WhatsApp</a>
+            </div>
+        `;
+    });
+}
+
+// ADMIN MINI
+function toggleAdmin() {
+    const p = document.getElementById("adminPanel");
+    p.style.display = p.style.display === "block" ? "none" : "block";
+}
+
+// Isi dropdown admin
+document.getElementById("adminCategory").innerHTML = categories.map(c => `<option>${c}</option>`).join("");
+
+// Tambah produk
+function addProduct() {
+    const c = adminCategory.value;
+    const pv = adminProvider.value;
+    const pr = adminProduct.value;
+    const h = adminHarga.value;
+    const f = adminFoto.value || defaultImage;
+
+    let provider = providers[c].find(x => x.name === pv);
+    if (!provider) {
+        provider = { name: pv, products: [] };
+        providers[c].push(provider);
+    }
+
+    provider.products.push({
+        name: pr,
+        price: Number(h),
+        img: f,
+        rating: 5
+    });
+
+    alert("Produk berhasil ditambahkan!");
+    toggleAdmin();
+}
+</script>
+
+</body>
+</html>
