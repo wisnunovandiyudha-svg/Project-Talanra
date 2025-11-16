@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Penyedia</title>
+
+<style>
+body {
+    margin:0;
+    font-family:Arial;
+    background:linear-gradient(180deg,#0044ff,#ffdd3c);
+    color:white;
+}
+
+header { text-align:center; padding:15px;}
+.container { padding:20px; }
+
+.grid {
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.card {
+    background:rgba(255,255,255,0.2);
+    padding:12px;
+    border-radius:12px;
+    cursor:pointer;
+}
+
+.card img {
+    width:100%;
+    height:130px;
+    border-radius:10px;
+    object-fit:cover;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h2 id="title"></h2>
+</header>
+
+<div class="container">
+    <div class="grid" id="productList"></div>
+</div>
+
+<script>
+const url = new URL(window.location.href);
+const kategori = url.searchParams.get("k");
+const penyedia = url.searchParams.get("p");
+
+document.getElementById("title").innerText = penyedia;
+
+const productList = document.getElementById("productList");
+
+const produkDefault = [
+    {nama: "Produk A", harga:15000},
+    {nama: "Produk B", harga:20000},
+    {nama: "Produk C", harga:25000},
+    {nama: "Produk D", harga:30000}
+];
+
+produkDefault.forEach(prod => {
+    productList.innerHTML += `
+        <a class="card" href="produk.html?nama=${prod.nama}&harga=${prod.harga}&penyedia=${penyedia}">
+            <img src="assets/default.jpg">
+            <h4>${prod.nama}</h4>
+            <p>Rp${prod.harga.toLocaleString()}</p>
+            <p>⭐⭐⭐⭐☆</p>
+        </a>
+    `;
+});
+</script>
+
+</body>
+</html>
