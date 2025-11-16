@@ -1,72 +1,3 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Penyedia</title>
-
-<style>
-body {
-    margin:0;
-    font-family:Arial;
-    background:linear-gradient(180deg,#0044ff,#ffdd3c);
-    color:white;
-}
-
-header { text-align:center; padding:15px;}
-.container { padding:20px; }
-
-.grid {
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:15px;
-}
-
-.card {
-    background:rgba(255,255,255,0.2);
-    padding:12px;
-    border-radius:12px;
-    cursor:pointer;
-}
-
-.card img {
-    width:100%;
-    height:130px;
-    border-radius:10px;
-    object-fit:cover;
-}
-</style>
-
-<script>
-function randomImageKategori(k) {
-    const map = {
-        "Makanan": "food,indonesia",
-        "Transportasi": "transport,asia",
-        "Penginapan": "hotel,room",
-        "Wisata": "travel,indonesia",
-        "Perahu": "boat,sea",
-        "Desain": "design,computer",
-        "Outdoor": "outdoor,camping",
-        "Oleh2": "Tempoyak",
-        "JasaHarian": "service,worker",
-        "Tato": "tattoo"
-    };
-    return `https://source.unsplash.com/300x300/?${map[k] || "indonesia"}`;
-}
-</script>
-
-</head>
-
-<body>
-
-<header>
-    <h2 id="title"></h2>
-</header>
-
-<div class="container">
-    <div class="grid" id="productList"></div>
-</div>
-
 <script>
 const url = new URL(window.location.href);
 const kategori = url.searchParams.get("k");
@@ -76,24 +7,26 @@ document.getElementById("title").innerText = penyedia;
 
 const productList = document.getElementById("productList");
 
+// Produk default (bisa kamu ganti)
 const produkDefault = [
-    {nama: "Produk A", harga:Rp150000},
-    {nama: "Produk B", harga:Rp200000},
-    {nama: "Produk C", harga:Rp250000},
-    {nama: "Produk D", harga:Rp300000}
+    { nama: "Produk A", harga: 150000 },
+    { nama: "Produk B", harga: 200000 },
+    { nama: "Produk C", harga: 250000 },
+    { nama: "Produk D", harga: 300000 }
 ];
+
+const logoBase64 = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxAQEA8QDw8PDw8PDw8PDw8PDw8PDw8PFREWFhURFRUYHSggGBolGxUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGhAQGi0lHyUtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAKMBNwMBIgACEQEDEQH/xAAYAAEBAQEBAAAAAAAAAAAAAAAABQYDB//EACMQAAICAgICAQQDAAAAAAAAAAECAwQRBRIhMQYTQVEiMlL/xAAWAQEBAQAAAAAAAAAAAAAAAAADAgT/xAAcEQEAAgMBAQEAAAAAAAAAAAAAARECEgMhMUL/2gAMAwEAAhEDEQA/APyqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB//Z";
 
 produkDefault.forEach(prod => {
     productList.innerHTML += `
         <a class="card" href="produk.html?nama=${prod.nama}&harga=${prod.harga}&penyedia=${penyedia}">
-            <img src="assets/logotalanra.jpg">
-            <h4>${prod.nama}</h4>
-            <p>Rp${prod.harga.toLocaleString()}</p>
-            <p>⭐⭐⭐⭐☆</p>
+            <img src="${logoBase64}">
+            <div>
+                <h3>${prod.nama}</h3>
+                <p>Rp${prod.harga.toLocaleString()}</p>
+                <p>⭐⭐⭐⭐⭐</p>
+            </div>
         </a>
     `;
 });
 </script>
-
-</body>
-</html>
