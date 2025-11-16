@@ -1,407 +1,118 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Project Talanra — Marketplace Lokal</title>
-<meta name="description" content="Project Talanra - Marketplace lokal (Makanan, Transportasi, Penginapan, Wisata, dll)" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Talanra</title>
 
-<!-- Single-file styles -->
 <style>
-  :root{
-    --bg-a:#0b63ff; --bg-b:#ffd54d; /* blue -> yellow */
-    --card:#fff;
-    --muted:#6b7280;
-    --accent: #0b63ff;
-    --accent-2: #ffd54d;
-    --success: #25D366;
-  }
-  [data-theme="dark"]{
-    --card:#071029;
-    --muted:#9aa6b2;
-    color: #e6eef8;
-  }
+body {
+    margin: 0;
+    font-family: Arial;
+    background: linear-gradient(180deg, #0044ff, #ffdd3c);
+    color: #fff;
+}
 
-  *{box-sizing:border-box}
-  body{margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;background:linear-gradient(135deg,var(--bg-a),var(--bg-b));min-height:100vh;color:#0b1220}
-  a{color:inherit}
-  /* Header */
-  header{position:sticky;top:0;backdrop-filter: blur(6px);z-index:40;padding:12px 18px;background:linear-gradient(90deg,rgba(255,255,255,0.6),rgba(255,255,255,0.2));display:flex;align-items:center;gap:12px;box-shadow:0 1px 6px rgba(2,6,23,0.08)}
-  [data-theme="dark"] header{background:rgba(3,6,12,0.6)}
-  .logo{width:56px;height:56px;border-radius:10px;object-fit:cover;box-shadow:0 8px 24px rgba(11,19,43,0.12)}
-  .brand{font-weight:800;font-size:18px}
-  .subtitle{font-size:12px;color:var(--muted)}
-  .search{margin-left:16px;flex:1}
-  .search input{width:100%;padding:10px 12px;border-radius:999px;border:1px solid rgba(2,6,23,0.06);outline:none}
-  .top-actions{display:flex;gap:8px;align-items:center;margin-left:12px}
-  .btn{padding:8px 12px;border-radius:10px;border:none;background:var(--card);cursor:pointer;box-shadow:0 6px 20px rgba(2,6,23,0.06)}
-  .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;font-weight:700}
-  .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;cursor:pointer}
+header {
+    text-align: center;
+    padding: 20px;
+}
 
-  /* Layout */
-  .container{max-width:1100px;margin:18px auto;padding:0 16px}
-  .hero{display:flex;gap:14px;align-items:center;margin-bottom:14px}
-  .hero-card{background:rgba(255,255,255,0.9);padding:14px;border-radius:12px;display:flex;align-items:center;gap:12px;flex:1;box-shadow:0 12px 30px rgba(2,6,23,0.08)}
-  [data-theme="dark"] .hero-card{background: rgba(11,17,28,0.6)}
-  .hero img{width:96px;height:96px;border-radius:8px;object-fit:cover}
-  .hero h2{margin:0;font-size:18px}
-  .categories{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:18px}
-  @media(min-width:900px){ .categories{grid-template-columns:repeat(5,1fr)} }
-  .cat{background:var(--card);padding:12px;border-radius:12px;text-align:center;cursor:pointer;transition:transform .15s,box-shadow .15s;display:flex;flex-direction:column;gap:8px;align-items:center}
-  .cat:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(2,6,23,0.08)}
-  .cat img{width:100%;height:80px;object-fit:cover;border-radius:8px}
+header img {
+    width: 120px;
+    border-radius: 12px;
+}
 
-  /* Pages */
-  .page{display:none}
-  .page.active{display:block}
-  .section-title{display:flex;align-items:center;justify-content:space-between;margin:10px 0}
-  .muted{color:var(--muted)}
-  .providers-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-  @media(min-width:900px){ .providers-grid{grid-template-columns:repeat(3,1fr)} }
-  .provider{background:var(--card);padding:12px;border-radius:12px;cursor:pointer;transition:transform .12s}
-  .provider:hover{transform:translateY(-6px)}
-  .provider img{width:100%;height:140px;object-fit:cover;border-radius:8px}
-  .provider .name{font-weight:700;margin-top:8px}
-  .provider .meta{font-size:13px;color:var(--muted)}
+.container {
+    padding: 20px;
+}
 
-  .products-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-  @media(min-width:900px){ .products-grid{grid-template-columns:repeat(3,1fr)} }
-  .product{background:var(--card);padding:10px;border-radius:12px;display:flex;flex-direction:column;gap:8px;cursor:pointer}
-  .product img{width:100%;height:160px;object-fit:cover;border-radius:8px}
-  .product .title{font-weight:700}
-  .price{font-weight:800;color:var(--accent)}
-  .prod-row{display:flex;justify-content:space-between;align-items:center}
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 15px;
+}
 
-  /* Product page (full) */
-  .product-page{background:var(--card);padding:16px;border-radius:12px}
-  .product-big{display:flex;flex-direction:column;gap:12px}
-  @media(min-width:900px){ .product-big{flex-direction:row} }
-  .product-big img{width:100%;max-width:560px;height:360px;object-fit:cover;border-radius:12px}
-  .product-info{flex:1}
-  .wa-btn{background:var(--success);color:white;padding:10px 12px;border-radius:10px;text-decoration:none;display:inline-block;font-weight:700}
+.card {
+    background: rgba(255,255,255,0.2);
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+}
 
-  /* Floating cart */
-  .floating-cart{position:fixed;right:18px;bottom:18px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;padding:10px 14px;border-radius:999px;box-shadow:0 18px 50px rgba(2,6,23,0.15);cursor:pointer;display:flex;gap:10px;align-items:center}
+.card img {
+    width: 100%;
+    border-radius: 10px;
+    height: 120px;
+    object-fit: cover;
+}
 
-  /* Modal & forms */
-  .modal-back{position:fixed;inset:0;background:rgba(2,6,23,0.45);display:flex;align-items:center;justify-content:center;z-index:60;opacity:0;pointer-events:none;transition:opacity .15s}
-  .modal-back.open{opacity:1;pointer-events:auto}
-  .modal-card{background:var(--card);padding:14px;border-radius:12px;max-width:980px;width:100%}
-
-  /* small */
-  .small{font-size:13px;color:var(--muted)}
-  footer{margin-top:40px;padding:20px;text-align:center;color:var(--muted)}
-  .admin-badge{background:#111;color:#fff;padding:6px 8px;border-radius:8px;font-weight:700}
-  .empty{padding:28px;border-radius:12px;background:rgba(255,255,255,0.9);text-align:center}
-  [data-theme="dark"] .empty{background:rgba(11,17,28,0.6)}
 </style>
 </head>
-<body data-theme="light">
 
-<!-- Header -->
+<body>
+
 <header>
-  <img src="logotalanra.jpg" alt="logo" class="logo" onerror="this.src=placeholder(64,64,'T')">
-  <div>
-    <div class="brand">Project Talanra</div>
-    <div class="subtitle small">Marketplace Lokal — Makanan · Transportasi · Penginapan · Jasa</div>
-  </div>
-
-  <div class="search">
-    <input id="globalSearch" placeholder="Cari produk, penyedia, atau kategori..." oninput="onSearch()" />
-  </div>
-
-  <div class="top-actions">
-    <button id="themeBtn" class="icon-btn" title="Toggle theme">🌓</button>
-    <button id="adminBtn" class="btn">Admin</button>
-    <button id="homeBtn" class="btn btn-primary" onclick="navigate('/')">Beranda</button>
-  </div>
+    <img src="assets/logotalanra.jpg" alt="">
+    <h1>Project Talanra</h1>
 </header>
 
-<!-- Main container -->
-<main class="container">
-  <!-- HOME PAGE -->
-  <section id="home" class="page active">
-    <div class="hero">
-      <div class="hero-card">
-        <img src="logotalanra.jpg" onerror="this.src=placeholder(96,96,'T')" alt="logo" />
-        <div style="flex:1">
-          <h2>Selamat datang di Project Talanra</h2>
-          <div class="small">Marketplace lokal — temukan makanan, transportasi, penginapan, dan jasa di sekitarmu.</div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
-          <a class="btn" href="#" onclick="navigate('/cart');return false">Lihat Keranjang</a>
-          <a class="btn wa-btn" href="https://wa.me/6282211608688" target="_blank">Hubungi via WhatsApp</a>
-        </div>
-      </div>
+<div class="container">
+    <h2>Kategori</h2>
+
+    <div class="grid">
+        <a class="card" href="kategori.html?k=Makanan">
+            <img src="assets/default.jpg">
+            <h3>Makanan</h3>
+        </a>
+
+        <a class="card" href="kategori.html?k=Transportasi">
+            <img src="assets/default.jpg">
+            <h3>Transportasi</h3>
+        </a>
+
+        <a class="card" href="kategori.html?k=Penginapan">
+            <img src="assets/default.jpg">
+            <h3>Penginapan</h3>
+        </a>
+
+        <a class="card" href="kategori.html?k=Wisata">
+            <img src="assets/default.jpg">
+            <h3>Wisata / Trip Lokal</h3>
+        </a>
+
+        <a class="card" href="kategori.html?k=Perahu">
+            <img src="assets/default.jpg">
+            <h3>Sewa Perahu</h3>
+        </a>
+
+        <a class="card" href="kategori.html?k=Desain">
+            <img src="assets/default.jpg">
+            <h3>Jasa Desain / Foto</h3>
+        </a>
+
+        <a class="card" href="kategori.html?k=Outdoor">
+            <img src="assets/default.jpg">
+            <h3>Peralatan Outdoor</h3>
+        </a>
+
+        <a class="card" href="kategori.html?k=Oleh2">
+            <img src="assets/default.jpg">
+            <h3>Oleh-oleh</h3>
+        </a>
+
+        <a class="card" href="kategori.html?k=JasaHarian">
+            <img src="assets/default.jpg">
+            <h3>Jasa Harian</h3>
+        </a>
+
+        <a class="card" href="kategori.html?k=Tato">
+            <img src="assets/default.jpg">
+            <h3>Jasa Tato</h3>
+        </a>
     </div>
-
-    <div class="section-title">
-      <h3>Semua Kategori</h3>
-      <div class="small">Klik untuk masuk ke halaman kategori</div>
-    </div>
-
-    <div id="categories" class="categories"></div>
-  </section>
-
-  <!-- CATEGORY PAGE -->
-  <section id="categoryPage" class="page">
-    <div class="section-title">
-      <div>
-        <h3 id="catName">Kategori</h3>
-        <div class="small" id="catSubtitle">Daftar penyedia</div>
-      </div>
-      <div>
-        <button class="btn" onclick="navigate('/')">← Kembali</button>
-      </div>
-    </div>
-
-    <div id="providers" class="providers-grid"></div>
-    <div id="noProviders" class="empty hidden" style="display:none">Tidak ada penyedia.</div>
-  </section>
-
-  <!-- PROVIDER PAGE -->
-  <section id="providerPage" class="page">
-    <div class="section-title">
-      <div>
-        <h3 id="providerName">Penyedia</h3>
-        <div class="small" id="providerMeta">Produk & info</div>
-      </div>
-      <div>
-        <button class="btn" onclick="navigate('#/category/'+encodeURIComponent(window.locationState?.category||'') )">← Kembali</button>
-      </div>
-    </div>
-
-    <div id="providerInfo" style="display:flex;gap:12px;align-items:center;margin-bottom:12px"></div>
-    <div id="providerProducts" class="products-grid"></div>
-  </section>
-
-  <!-- PRODUCT PAGE (full) -->
-  <section id="productPage" class="page">
-    <div class="section-title">
-      <div>
-        <h3 id="productTitleHead">Detail Produk</h3>
-        <div class="small" id="productMetaHead">Detail</div>
-      </div>
-      <div>
-        <button class="btn" onclick="navigate('#/provider/'+encodeURIComponent(window.locationState?.category||'')+'/'+encodeURIComponent(window.locationState?.providerIdx||0))">← Kembali</button>
-      </div>
-    </div>
-
-    <div id="productArea" class="product-page"></div>
-  </section>
-</main>
-
-<!-- Floating cart -->
-<div class="floating-cart" id="cartFloat" title="Keranjang" onclick="navigate('/cart')">
-  <div id="cartCount">0</div>
-  <div>Keranjang</div>
 </div>
 
-<!-- Cart page reuses productPage route /cart -->
-<!-- Admin modal -->
-<div id="adminModal" class="modal-back" onclick="if(event.target===this)closeAdminModal()">
-  <div class="modal-card">
-    <h3>Admin Panel</h3>
-    <div id="adminArea"></div>
-    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
-      <button class="btn" onclick="closeAdminModal()">Tutup</button>
-    </div>
-  </div>
-</div>
-
-<!-- small toast -->
-<div id="toast" style="position:fixed;left:50%;transform:translateX(-50%);bottom:90px;background:#111;color:#fff;padding:8px 12px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:80"></div>
-
-<footer style="text-align:center;margin-top:30px;color:var(--muted);padding-bottom:30px">© Project Talanra — Demo. WA demo: <a href="https://wa.me/6282211608688" target="_blank">+62 822-1160-8688</a></footer>
-
-<!-- Script: data + SPA routing + logic -->
-<script>
-/* -----------------------
-   Utilities
-   ----------------------- */
-const WA_LINK = 'https://wa.me/6282211608688';
-function placeholder(w=200,h=200,text='IMG'){
-  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}' viewBox='0 0 ${w} ${h}'><rect width='100%' height='100%' fill='#e6f0ff'/><text x='50%' y='50%' font-family='Arial' fill='#0b1220' font-size='24' text-anchor='middle' dominant-baseline='middle'>${text}</text></svg>`;
-  return 'data:image/svg+xml;utf8,'+encodeURIComponent(svg);
-}
-function q(sel){ return document.querySelector(sel) }
-function qAll(sel){ return Array.from(document.querySelectorAll(sel)) }
-function showToast(msg, t=1600){ const el=q('#toast'); el.innerText=msg; el.style.opacity=1; setTimeout(()=>el.style.opacity=0,t) }
-function fmt(n){ return 'Rp'+Number(n).toLocaleString('id-ID') }
-
-/* -----------------------
-   Random Indonesian names generator
-   ----------------------- */
-const IND_NAMES = {
-  first: ["Ayu","Budi","Citra","Dedi","Eko","Fajar","Gita","Heri","Indah","Joko","Kiki","Lia","Maman","Nisa","Oka","Putri","Rizky","Sari","Tito","Umi","Vina","Wawan","Yuni","Zaki"],
-  last: ["Saputra","Wijaya","Sutanto","Pratama","Putra","Sari","Hidayat","Kusuma","Santoso","Wijaya","Rahman","Hasan","Wijaya","Haryanto","Tamami"]
-};
-function randomName(){ const f=IND_NAMES.first[Math.floor(Math.random()*IND_NAMES.first.length)]; const l=IND_NAMES.last[Math.floor(Math.random()*IND_NAMES.last.length)]; const type = Math.random() < 0.5 ? `Warung ${f}` : `${f} ${l}`; return type }
-
-/* -----------------------
-   Seed data
-   ----------------------- */
-const SEED = (function(){
-  const cats = ["Makanan","Transportasi","Penginapan","Wisata / Trip Lokal","Sewa Perahu","Jasa Desain / Foto","Peralatan Outdoor","Oleh-oleh","Jasa Harian","Jasa Tato"];
-  const imgs = [
-    "https://i.ibb.co/0G0Y3nX/nasi-goreng.jpg",
-    "https://i.ibb.co/YZ7wH2z/food.jpg",
-    "https://i.ibb.co/C0z2VCd/hotel.jpg",
-    "https://i.ibb.co/Q6Z4ZBc/boat.jpg",
-    "https://i.ibb.co/z7RxH2d/travel.jpg",
-    "https://i.ibb.co/4R6r2qB/outdoor.jpg"
-  ];
-  const data = {};
-  cats.forEach((cat,i)=>{
-    data[cat]=[];
-    for(let s=0;s<6;s++){
-      const sellerId = `${i}-${s}-${Date.now().toString().slice(-4)}-${Math.random().toString(36).slice(2,6)}`;
-      const seller = { id: sellerId, name: randomName(), img: imgs[(i+s)%imgs.length], rating: (Math.random()*1.8+3.2).toFixed(1)*1, products: [] };
-      for(let p=0;p<6;p++){
-        const pid = `${sellerId}-p${p}`;
-        seller.products.push({
-          id: pid,
-          title: `${cat==='Makanan' ? 'Nasi Goreng' : 'Layanan'} ${p+1}`,
-          price: 12000 + p*5000,
-          img: imgs[(p+i+1)%imgs.length],
-          rating: (Math.random()*1.8+3.2).toFixed(1)*1,
-          desc: `Deskripsi singkat untuk item ${p+1} di ${seller.name}.`
-        });
-      }
-      data[cat].push(seller);
-    }
-  });
-  return data;
-})();
-
-/* -----------------------
-   Persistence (localStorage)
-   ----------------------- */
-const KEY = 'talanra_v2_data';
-const CART_KEY = 'talanra_v2_cart';
-const RAT_KEY = 'talanra_v2_ratings';
-const THEME_KEY = 'talanra_v2_theme';
-const ADMIN_PIN = '1234';
-
-function load(){
-  try{
-    const raw = localStorage.getItem(KEY);
-    if(raw) return JSON.parse(raw);
-  }catch(e){}
-  localStorage.setItem(KEY, JSON.stringify(SEED));
-  return JSON.parse(JSON.stringify(SEED));
-}
-let DB = load();
-
-function save(){ localStorage.setItem(KEY, JSON.stringify(DB)) }
-
-function loadCart(){ try{ return JSON.parse(localStorage.getItem(CART_KEY)||'[]') }catch(e){return []} }
-function saveCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)) }
-let CART = loadCart();
-
-function loadRatings(){ try{ return JSON.parse(localStorage.getItem(RAT_KEY)||'{}') }catch(e){return {}} }
-function saveRatings(r){ localStorage.setItem(RAT_KEY, JSON.stringify(r)) }
-let RATINGS = loadRatings();
-
-/* -----------------------
-   Routing & state
-   ----------------------- */
-const pages = { home: q('#home'), category: q('#categoryPage'), provider: q('#providerPage'), product: q('#productPage'), cart: null };
-window.locationState = {};
-
-function navigate(path){
-  // simple router: '/', '/category/Name', '/provider/Category/Idx', '/product/Category/ProviderIdx/ProductId', '/cart'
-  if(path === '/') {
-    setActive('home'); history.pushState({},'', '#/');
-    return;
-  }
-  if(path === '/cart'){ renderCart(); setActive('product'); history.pushState({},'', '#/cart'); return; }
-
-  if(path.startsWith('#')) path = path.slice(1);
-  if(path.startsWith('/')) {
-    // handle
-    const seg = path.split('/').filter(Boolean);
-    if(seg.length===0){ setActive('home'); history.pushState({},'', '#/'); return; }
-    if(seg[0]==='category' && seg[1]){
-      const cat = decodeURIComponent(seg.slice(1).join('/'));
-      openCategory(cat); history.pushState({},'', '#/category/'+encodeURIComponent(cat)); return;
-    }
-    if(seg[0]==='provider' && seg[1] && seg[2]){
-      const cat = decodeURIComponent(seg[1]);
-      const idx = Number(decodeURIComponent(seg[2]));
-      openProvider(cat, idx); history.pushState({},'', '#/provider/'+encodeURIComponent(cat)+'/'+encodeURIComponent(idx)); return;
-    }
-    if(seg[0]==='product' && seg[1] && seg[2] && seg[3]){
-      const cat = decodeURIComponent(seg[1]); const pidx = Number(decodeURIComponent(seg[2])); const pid = decodeURIComponent(seg[3]);
-      openProductPage(cat,pidx,pid); history.pushState({},'', '#/product/'+encodeURIComponent(cat)+'/'+encodeURIComponent(pidx)+'/'+encodeURIComponent(pid)); return;
-    }
-  }
-  // fallback
-  setActive('home'); history.pushState({},'', '#/');
-}
-
-function setActive(name){
-  qAll('.page').forEach(p=>p.classList.remove('active'));
-  if(name==='home') q('#home').classList.add('active');
-  else if(name==='category') q('#categoryPage').classList.add('active');
-  else if(name==='provider') q('#providerPage').classList.add('active');
-  else if(name==='product') q('#productPage').classList.add('active');
-}
-
-/* -----------------------
-   Render helpers
-   ----------------------- */
-function renderCategories(){
-  const el = q('#categories'); el.innerHTML='';
-  Object.keys(DB).forEach(cat=>{
-    const thumb = DB[cat][0]?.img || placeholder(120,84,cat[0]||'C');
-    const div = document.createElement('div'); div.className='cat';
-    div.innerHTML = `<img src="${thumb}" onerror="this.src='${placeholder(200,120,cat[0]||'C')}'"><div style="font-weight:800">${cat}</div><div class="small">${DB[cat].length} penyedia</div>`;
-    div.addEventListener('click', ()=>{ navigate('/category/'+encodeURIComponent(cat)) });
-    el.appendChild(div);
-  });
-}
-
-/* -----------------------
-   Category page
-   ----------------------- */
-function openCategory(cat){
-  window.locationState.category = cat;
-  q('#catName').innerText = cat;
-  q('#catSubtitle').innerText = `Menampilkan ${DB[cat]?.length||0} penyedia`;
-  const wrap = q('#providers'); wrap.innerHTML='';
-  const list = DB[cat] || [];
-  if(list.length===0){ q('#noProviders').style.display='block' } else { q('#noProviders').style.display='none' }
-  list.forEach((s,idx)=>{
-    const card = document.createElement('div'); card.className='provider';
-    card.innerHTML = `<img src="${s.img}" onerror="this.src='${placeholder(320,200,s.name[0]||'P')}'"><div class="name">${s.name}</div><div class="small">Rating: ${(RATINGS[s.id]||s.rating).toFixed(1)} ⭐</div><div style="display:flex;justify-content:space-between;margin-top:8px"><button class="btn" onclick="event.stopPropagation(); editProviderPrompt('${cat}',${idx})">Edit</button><a class="btn wa-btn" href="${WA_LINK}" target="_blank">WA</a></div>`;
-    card.addEventListener('click', ()=>{ navigate('/provider/'+encodeURIComponent(cat)+'/'+encodeURIComponent(idx)) });
-    wrap.appendChild(card);
-  });
-  setActive('category');
-}
-
-/* -----------------------
-   Provider page
-   ----------------------- */
-function openProvider(cat, idx){
-  window.locationState.category = cat; window.locationState.providerIdx = idx;
-  const s = (DB[cat]||[])[idx];
-  if(!s) { showToast('Penyedia tidak ditemukan'); navigate('/'); return; }
-  q('#providerName').innerText = s.name;
-  q('#providerMeta').innerText = `${s.products.length} produk • Rating ${(RATINGS[s.id]||s.rating).toFixed(1)} ⭐`;
-  const info = q('#providerInfo'); info.innerHTML = `<img src="${s.img}" style="width:160px;height:120px;object-fit:cover;border-radius:8px" onerror="this.src='${placeholder(320,200,s.name[0])}'"><div style="flex:1"><div style="font-weight:800">${s.name}</div><div class="small" style="margin-top:4px">${s.products.length} produk tersedia</div><div style="margin-top:8px"><a class="wa-btn" href="${WA_LINK}" target="_blank">Hubungi via WhatsApp</a></div></div>`;
-  const list = q('#providerProducts'); list.innerHTML='';
-  s.products.forEach(pr=>{
-    const div = document.createElement('div'); div.className='product';
-    div.innerHTML = `<img src="${pr.img}" onerror="this.src='${placeholder(320,220,pr.title[0])}'"><div class="title">${pr.title}</div><div class="prod-row"><div class="price">${fmt(pr.price)}</div><div class="small">${(RATINGS[pr.id]||pr.rating).toFixed(1)} ⭐</div></div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn" onclick="event.stopPropagation(); navigate('/product/'+encodeURIComponent(cat)+'/'+encodeURIComponent(idx)+'/'+encodeURIComponent(pr.id))">Detail</button><button class="btn btn-primary" onclick="event.stopPropagation(); addToCart(pr.id)">Tambah Keranjang</button></div>`;
-    div.addEventListener('click', ()=>{ navigate('/product/'+encodeURIComponent(cat)+'/'+encodeURIComponent(idx)+'/'+encodeURIComponent(pr.id)) });
-    list.appendChild(div);
-  });
-  setActive('provider');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-/* -----------------------
-   Product full page
-   ----------------
+</body>
+</html>
